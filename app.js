@@ -19,17 +19,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/', routes);
 
-app.use(function errGen(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 // error handler
-app.use(function errHandler(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status).send({ status: err.status, message: err.message });
   next();
 });
 
-app.listen(port, function portLogger() {
+app.listen(port, function () {
   console.log('now listening on port ' + port); // eslint-disable-line
 });
