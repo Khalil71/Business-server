@@ -129,7 +129,7 @@ PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required)
 
 ```
-PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+DELETE companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
 ```
 
 ## Author
