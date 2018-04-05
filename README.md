@@ -60,25 +60,33 @@ Server runs on http://localhost:3000/
 
 ### Get all companies
 
+```
 GET companies/
+```
 
 ### Get one company
 
 params: (displayName: required)
 
+```
 GET companies/:displayName
+```
 
 ### Add company
 
 body: (displayName: required)
 
+```
 POST companies/
+```
 
 ### Update company
 
 params: (displayName: required) --- body: (newDisplayName: required)
 
+```
 PATCH companies/:displayName
+```
 
 ### Workspaces APIs
 
@@ -86,13 +94,17 @@ PATCH companies/:displayName
 
 params: (companyDisplayName: required) --- body: (workspaceDispalyName: required)
 
+```
 POST companies/:companyDisplayName/workspaces
+```
 
 ### Update workspace
 
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (newWorkspaceDispalyName: required)
 
+```
 PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName
+```
 
 ### Users APIs
 
@@ -100,19 +112,25 @@ PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName
 
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required, role: required)
 
+```
 POST companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+```
 
 ### Update user
 
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required, newRole: required, newEmail: required)
 
+```
 PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+```
 
 ### Remove user
 
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required)
 
+```
 PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+```
 
 ## Author
 
