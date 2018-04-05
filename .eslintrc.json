@@ -1,0 +1,18 @@
+{
+  "extends": ["prettier", "airbnb-base/legacy"],
+  "plugins": ["require-path-exists", "import", "prettier"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    "require-path-exists/notEmpty": 2,
+    "require-path-exists/tooManyArguments": 2,
+    "require-path-exists/exists": 2,
+    "vars-on-top": 0,
+    "func-names": 0
+  }
+}
