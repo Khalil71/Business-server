@@ -10,10 +10,6 @@ What you need to install
 node.js
 ```
 
-```
-mongoDB
-```
-
 ### Installing dependencies
 
 ```
