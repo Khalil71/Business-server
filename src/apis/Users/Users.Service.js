@@ -44,6 +44,7 @@ User.prototype.findUser = function () {
       if (res === null) {
         return res;
       }
+      // Here I simply got the requied user object by index and changed its values with the new data
       var workspaceIndex = res.workspaces.findIndex(function (elem) {
         return elem.displayName === workspaceDispalyName;
       });
@@ -98,6 +99,9 @@ User.prototype.findUserToRemove = function () {
       if (res === null) {
         return res;
       }
+      // In order to remove the object from the users array
+      // I switched the traget user object with the last one in the user array
+      // And then useed .pop() method to remove the object
       var workspaceIndex = res.workspaces.findIndex(function (elem) {
         return elem.displayName === workspaceDispalyName;
       });

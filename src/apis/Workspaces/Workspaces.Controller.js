@@ -3,6 +3,9 @@ var validate = require('../../services/ValidationService');
 
 module.exports = {
   createWorkspace: function (req, res, next) {
+    // To make sure the workspace name is unique within it's Company's findWorkspaceToUpdate
+    // I had to query the DB twice first to find if the name already exisits in this scopre
+    // second to create the workspace incase the workspace doesn't already exist
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)
@@ -45,6 +48,7 @@ module.exports = {
       });
   },
   updateWorkspace: function (req, res, next) {
+    // this process is simillar to the createWorkspace method
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)

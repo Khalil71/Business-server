@@ -32,6 +32,9 @@ module.exports = {
     req.body.companyDisplayName = req.params.companyDisplayName;
     req.body.workspaceDispalyName = req.params.workspaceDispalyName;
     var instance = new User(req.body);
+    // In order to make sure the workspace name is unique within it's workspace's scope
+    // I would query the DB twice first to make sure the user doesn't exist
+    // sencond to create the user
     return instance
       .findUser()
       .then(function (out) {
@@ -97,6 +100,10 @@ module.exports = {
     req.body.companyDisplayName = req.params.companyDisplayName;
     req.body.workspaceDispalyName = req.params.workspaceDispalyName;
     var instance = new User(req.body);
+    // I wasn't able to find a way to query the DB for a doulbe nested subdoc
+    // so I would query the DB twice first to get the requied document
+    // and then chnage the data that is required to be changed
+    // sencond to update(save) the whole document
     return instance
       .findUser()
       .then(function (out) {
@@ -125,6 +132,7 @@ module.exports = {
         return next(e);
       });
   },
+  // This proccess is similar to the updateUser method
   removeUser: function (req, res, next) {
     if (
       !req.params.companyDisplayName ||
