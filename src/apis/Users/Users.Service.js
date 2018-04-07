@@ -99,23 +99,13 @@ User.prototype.findUserToRemove = function () {
       if (res === null) {
         return res;
       }
-      // In order to remove the object from the users array
-      // I switched the traget user object with the last one in the user array
-      // And then useed .pop() method to remove the object
       var workspaceIndex = res.workspaces.findIndex(function (elem) {
         return elem.displayName === workspaceDispalyName;
       });
       var usersIndex = res.workspaces[workspaceIndex].users.findIndex(function (elem) {
         return elem.email === email;
       });
-      var removeObj = res.workspaces[workspaceIndex].users[usersIndex];
-      var lastObj =
-        res.workspaces[workspaceIndex].users[res.workspaces[workspaceIndex].users.length - 1];
-      res.workspaces[workspaceIndex].users[usersIndex] = lastObj;
-      res.workspaces[workspaceIndex].users[
-        res.workspaces[workspaceIndex].users.length - 1
-      ] = removeObj;
-      res.workspaces[workspaceIndex].users.pop();
+      res.workspaces[workspaceIndex].users.splice(usersIndex, 1);
       return res;
     })
     .catch(function (e) {
