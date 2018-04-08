@@ -8,9 +8,7 @@ var usersSchema = new mongoose.Schema(
     email: {
       type: String,
       reqired: true,
-      unique: true,
-      lowercase: true,
-      sparse: true
+      lowercase: true
     },
     role: { type: String, reqired: true, lowercase: true }
   },
@@ -27,9 +25,7 @@ var workspacesSchema = new mongoose.Schema({
   name: {
     type: String,
     reqired: true,
-    unique: true,
-    lowercase: true,
-    sparse: true
+    lowercase: true
   },
   users: [usersSchema]
 });

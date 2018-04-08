@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var Company = require('../apis/Companies/Companies.Service');
 var Workspace = require('../apis/Workspaces/Workspaces.Service');
 var Users = require('../apis/Users/Users.Service');
-var Companies = require('../models/Companies');
 
 describe('Users Tests', () => {
   before(function (done) {
@@ -11,14 +10,15 @@ describe('Users Tests', () => {
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error')); // eslint-disable-line
     db.once('open', function () {
-      console.log('We are connected to test database!'); // eslint-disable-line
+      console.log('We are connected to Business database!'); // eslint-disable-line
       done();
     });
   });
 
-  it('should remove all records from the DB', function (done) {
-    Companies.remove({}).then(function () {
-      return done();
+  before(function (done) {
+    mongoose.connection.db.dropCollection('companies', function () {
+      console.log('Companies collection dropped'); // eslint-disable-line
+      done();
     });
   });
 

@@ -6,10 +6,10 @@ var UserRoutes = require('../apis/Users/index');
 var router = new Router();
 
 // Companies routes
-router.use('/companies', CompaniesRoutes);
+router.use('/', CompaniesRoutes);
 // Workspaces routes
-router.use('/companies', WorkspacesRoutes);
+router.use('/', WorkspacesRoutes);
 // User routes
-router.use('/companies', UserRoutes);
+router.use('/', UserRoutes);
 
 module.exports = router;

@@ -57,7 +57,7 @@ Server runs on http://localhost:3000/
 ### Get all companies
 
 ```
-GET companies/
+GET /
 ```
 
 ### Get one company
@@ -65,7 +65,7 @@ GET companies/
 params: (displayName: required)
 
 ```
-GET companies/:displayName
+GET /:displayName
 ```
 
 ### Add company
@@ -73,7 +73,7 @@ GET companies/:displayName
 body: (displayName: required)
 
 ```
-POST companies/
+POST /
 ```
 
 ### Update company
@@ -81,7 +81,7 @@ POST companies/
 params: (displayName: required) --- body: (newDisplayName: required)
 
 ```
-PATCH companies/:displayName
+PATCH /:displayName
 ```
 
 ### Workspaces APIs
@@ -91,7 +91,7 @@ PATCH companies/:displayName
 params: (companyDisplayName: required) --- body: (workspaceDispalyName: required)
 
 ```
-POST companies/:companyDisplayName/workspaces
+POST /:companyDisplayName/workspaces
 ```
 
 ### Update workspace
@@ -99,7 +99,7 @@ POST companies/:companyDisplayName/workspaces
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (newWorkspaceDispalyName: required)
 
 ```
-PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName
+PATCH /:companyDisplayName/workspaces/:workspaceDispalyName
 ```
 
 ### Users APIs
@@ -109,7 +109,7 @@ PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required, role: required)
 
 ```
-POST companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+POST /:companyDisplayName/workspaces/:workspaceDispalyName/users
 ```
 
 ### Update user
@@ -117,7 +117,7 @@ POST companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required, newRole: required, newEmail: required)
 
 ```
-PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+PATCH /:companyDisplayName/workspaces/:workspaceDispalyName/users
 ```
 
 ### Remove user
@@ -125,7 +125,7 @@ PATCH companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
 params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required)
 
 ```
-DELETE companies/:companyDisplayName/workspaces/:workspaceDispalyName/users
+DELETE /:companyDisplayName/workspaces/:workspaceDispalyName/users
 ```
 
 ## Author
