@@ -114,7 +114,7 @@ POST /:companyDisplayName/workspaces/:workspaceDispalyName/users
 
 ### Update user
 
-params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required, newRole: required, newEmail: required)
+params: (companyDisplayName: required, workspaceDispalyName: required) --- body: (email: required, newRole: required, newEmail: required) [newRole or newEmail or both]
 
 ```
 PATCH /:companyDisplayName/workspaces/:workspaceDispalyName/users
