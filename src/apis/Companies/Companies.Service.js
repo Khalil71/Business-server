@@ -9,8 +9,8 @@ Company.prototype.getAllCompanies = function () {
     .then(function (res) {
       return res;
     })
-    .catch(function () {
-      return new Error('No companies Found!');
+    .catch(function (e) {
+      return e;
     });
 };
 
@@ -19,8 +19,8 @@ Company.prototype.getCompany = function () {
     .then(function (res) {
       return res;
     })
-    .catch(function () {
-      return new Error('Company was not found!');
+    .catch(function (e) {
+      return e;
     });
 };
 
@@ -29,9 +29,14 @@ Company.prototype.createCompany = function () {
     displayName: this.data.displayName,
     name: this.data.displayName.toLowerCase()
   });
-  return company.save().then(function (res) {
-    return res;
-  });
+  return company
+    .save()
+    .then(function (res) {
+      return res;
+    })
+    .catch(function (e) {
+      return e;
+    });
 };
 
 Company.prototype.updateCompany = function () {
@@ -43,12 +48,16 @@ Company.prototype.updateCompany = function () {
       displayName: this.data.newDisplayName,
       name: this.data.newDisplayName.toLowerCase()
     }
-  ).then(function (res) {
-    if (res === null) {
-      return 'Nothing was updated';
-    }
-    return 'Success';
-  });
+  )
+    .then(function (res) {
+      if (res === null) {
+        return 'Nothing was updated';
+      }
+      return 'Success';
+    })
+    .catch(function (e) {
+      return e;
+    });
 };
 
 module.exports = Company;
