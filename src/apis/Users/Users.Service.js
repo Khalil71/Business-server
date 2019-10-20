@@ -93,11 +93,11 @@ class User {
         return res;
       }
       let workspaceIndex = res.workspaces
-          .findIndex(elem => elem.displayName === workspaceDisplayName),
-        usersIndex = res.workspaces[workspaceIndex].users
-          .findIndex(elem => elem.email === email),
-        removeObj = res.workspaces[workspaceIndex].users[usersIndex],
-        lastObj =
+        .findIndex(elem => elem.displayName === workspaceDisplayName);
+      let usersIndex = res.workspaces[workspaceIndex].users
+        .findIndex(elem => elem.email === email);
+      let removeObj = res.workspaces[workspaceIndex].users[usersIndex];
+      let lastObj =
         res.workspaces[workspaceIndex].users[res.workspaces[workspaceIndex].users.length - 1];
 
       res.workspaces[workspaceIndex].users[usersIndex] = lastObj;
@@ -105,7 +105,6 @@ class User {
         res.workspaces[workspaceIndex].users.length - 1
       ] = removeObj;
       res.workspaces[workspaceIndex].users.pop();
-
       return res;
     } catch (e) {
       return e;
