@@ -21,6 +21,7 @@
     "require-path-exists/exists": 2,
     "vars-on-top": 0,
     "node/no-unpublished-require": 0,
-    "func-names": 0
+    "func-names": 0,
+    "eslint-disable security/detect-object-injection": 0
   }
 }

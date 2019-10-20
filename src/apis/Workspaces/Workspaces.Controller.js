@@ -3,18 +3,12 @@ const { displayName } = require('../../services/ValidationService');
 
 module.exports = {
   createWorkspace: async (req, res, next) => {
-    if (
-      !req.params.companyDisplayName ||
-      !displayName.test(req.params.companyDisplayName)
-    ) {
+    if (!req.params.companyDisplayName || !displayName.test(req.params.companyDisplayName)) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
-    if (
-      !req.body.workspaceDisplayName ||
-      !displayName.test(req.body.workspaceDisplayName)
-    ) {
+    if (!req.body.workspaceDisplayName || !displayName.test(req.body.workspaceDisplayName)) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
@@ -36,26 +30,17 @@ module.exports = {
     }
   },
   updateWorkspace: async (req, res, next) => {
-    if (
-      !req.params.companyDisplayName ||
-      !displayName.test(req.params.companyDisplayName)
-    ) {
+    if (!req.params.companyDisplayName || !displayName.test(req.params.companyDisplayName)) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
-    if (
-      !req.params.workspaceDisplayName ||
-      !displayName.test(req.params.workspaceDisplayName)
-    ) {
+    if (!req.params.workspaceDisplayName || !displayName.test(req.params.workspaceDisplayName)) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
-    if (
-      !req.body.newWorkspaceDisplayName ||
-      !displayName.test(req.body.newWorkspaceDisplayName)
-    ) {
+    if (!req.body.newWorkspaceDisplayName || !displayName.test(req.body.newWorkspaceDisplayName)) {
       let err3 = new Error('valid newWorkspaceDisplayName required!');
       err3.status = 403;
       return next(err3);

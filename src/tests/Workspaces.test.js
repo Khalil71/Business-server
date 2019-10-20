@@ -8,14 +8,14 @@ describe('Workspace Tests', function () {
     mongoose.connect('mongodb://test1:test1@ds245805.mlab.com:45805/business');
     let db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error')); // eslint-disable-line
-    db.once('open', () => {
-      console.log('We are connected to Business database!'); // eslint-disable-line
-    }).then(() => {
-      mongoose.connection.db.dropCollection('companies', () => {
+    db.once('open', () =>
+      console.log('We are connected to Business database!')) // eslint-disable-line
+      .then(() => {
+        mongoose.connection.db.dropCollection('companies', () => {
         console.log('Companies collection dropped'); // eslint-disable-line
-        done();
+          done();
+        });
       });
-    });
   });
 
   it('should create a new Company', function (done) {

@@ -28,14 +28,17 @@ class Workspace {
   }
   async createWorkspace() {
     try {
-      const res = await Companies.update({ displayName: this.data.companyDisplayName }, {
-        $push: {
-          workspaces: {
-            displayName: this.data.workspaceDisplayName,
-            name: this.data.workspaceDisplayName.toLowerCase()
+      const res = await Companies.update(
+        { displayName: this.data.companyDisplayName },
+        {
+          $push: {
+            workspaces: {
+              displayName: this.data.workspaceDisplayName,
+              name: this.data.workspaceDisplayName.toLowerCase()
+            }
           }
         }
-      });
+      );
       if (res.nModified > 0) {
         return 'Success';
       }
@@ -67,6 +70,5 @@ class Workspace {
     }
   }
 }
-
 
 module.exports = Workspace;

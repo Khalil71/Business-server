@@ -1,4 +1,3 @@
-/* eslint-disable one-var */
 const Companies = require('../../models/Companies');
 
 class User {
@@ -30,10 +29,10 @@ class User {
     }
   }
   async findUser() {
-    let workspaceDisplayName = this.data.workspaceDisplayName,
-      email = this.data.email,
-      newEmail = this.data.newEmail,
-      newRole = this.data.newRole;
+    let workspaceDisplayName = this.data.workspaceDisplayName;
+    let email = this.data.email;
+    let newEmail = this.data.newEmail;
+    let newRole = this.data.newRole;
     try {
       const res = await Companies.findOne({
         displayName: this.data.companyDisplayName,
@@ -44,12 +43,13 @@ class User {
         return res;
       }
 
-      let workspaceIndex = res.workspaces
-        .findIndex(elem => elem.displayName === workspaceDisplayName);
-      let usersIndex = res.workspaces[workspaceIndex].users
-        .findIndex(elem => elem.email === email);
-      let newUserIndex = res.workspaces[workspaceIndex].users
-        .findIndex(elem => elem.email === newEmail);
+      let workspaceIndex = res.workspaces.findIndex(
+        elem => elem.displayName === workspaceDisplayName
+      );
+      let usersIndex = res.workspaces[workspaceIndex].users.findIndex(elem => elem.email === email);
+      let newUserIndex = res.workspaces[workspaceIndex].users.findIndex(
+        elem => elem.email === newEmail
+      );
 
       if (newEmail && newUserIndex >= 0) {
         return true;
@@ -92,10 +92,10 @@ class User {
       if (res === null) {
         return res;
       }
-      let workspaceIndex = res.workspaces
-        .findIndex(elem => elem.displayName === workspaceDisplayName);
-      let usersIndex = res.workspaces[workspaceIndex].users
-        .findIndex(elem => elem.email === email);
+      let workspaceIndex = res.workspaces.findIndex(
+        elem => elem.displayName === workspaceDisplayName
+      );
+      let usersIndex = res.workspaces[workspaceIndex].users.findIndex(elem => elem.email === email);
       let removeObj = res.workspaces[workspaceIndex].users[usersIndex];
       let lastObj =
         res.workspaces[workspaceIndex].users[res.workspaces[workspaceIndex].users.length - 1];
