@@ -1,9 +1,9 @@
 /* eslint-disable one-var */
-const { expect } = require('chai'),
-  mongoose = require('mongoose'),
-  Company = require('../apis/Companies/Companies.Service'),
-  Workspace = require('../apis/Workspaces/Workspaces.Service'),
-  Users = require('../apis/Users/Users.Service');
+const { expect } = require('chai');
+const mongoose = require('mongoose');
+const Company = require('../apis/Companies/Companies.Service');
+const Workspace = require('../apis/Workspaces/Workspaces.Service');
+const Users = require('../apis/Users/Users.Service');
 
 describe('Users Tests', () => {
   before((done) => {
