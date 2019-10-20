@@ -1,11 +1,11 @@
 const Workspace = require('./Workspaces.Service');
-const validate = require('../../services/ValidationService');
+const { displayName } = require('../../services/ValidationService');
 
 module.exports = {
   createWorkspace: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
-      !validate.displayName.test(req.params.companyDisplayName)
+      !displayName.test(req.params.companyDisplayName)
     ) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
@@ -13,7 +13,7 @@ module.exports = {
     }
     if (
       !req.body.workspaceDisplayName ||
-      !validate.displayName.test(req.body.workspaceDisplayName)
+      !displayName.test(req.body.workspaceDisplayName)
     ) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
@@ -38,7 +38,7 @@ module.exports = {
   updateWorkspace: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
-      !validate.displayName.test(req.params.companyDisplayName)
+      !displayName.test(req.params.companyDisplayName)
     ) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
@@ -46,7 +46,7 @@ module.exports = {
     }
     if (
       !req.params.workspaceDisplayName ||
-      !validate.displayName.test(req.params.workspaceDisplayName)
+      !displayName.test(req.params.workspaceDisplayName)
     ) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
@@ -54,7 +54,7 @@ module.exports = {
     }
     if (
       !req.body.newWorkspaceDisplayName ||
-      !validate.displayName.test(req.body.newWorkspaceDisplayName)
+      !displayName.test(req.body.newWorkspaceDisplayName)
     ) {
       let err3 = new Error('valid newWorkspaceDisplayName required!');
       err3.status = 403;

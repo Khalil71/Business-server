@@ -1,11 +1,11 @@
 const User = require('./Users.Service');
-const validate = require('../../services/ValidationService');
+const { displayName, email, roles } = require('../../services/ValidationService');
 
 module.exports = {
   createUser: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
-      !validate.displayName.test(req.params.companyDisplayName)
+      !displayName.test(req.params.companyDisplayName)
     ) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
@@ -13,18 +13,18 @@ module.exports = {
     }
     if (
       !req.params.workspaceDisplayName ||
-      !validate.displayName.test(req.params.workspaceDisplayName)
+      !displayName.test(req.params.workspaceDisplayName)
     ) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
-    if (!req.body.email || !validate.email.test(req.body.email)) {
+    if (!req.body.email || !email.test(req.body.email)) {
       let err2 = new Error('valid email required!');
       err2.status = 403;
       return next(err2);
     }
-    if (!req.body.role || !validate.roles.test(req.body.role)) {
+    if (!req.body.role || !roles.test(req.body.role)) {
       let err3 = new Error('valid role required!');
       err3.status = 403;
       return next(err3);
@@ -49,7 +49,7 @@ module.exports = {
   updateUser: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
-      !validate.displayName.test(req.params.companyDisplayName)
+      !displayName.test(req.params.companyDisplayName)
     ) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
@@ -57,24 +57,24 @@ module.exports = {
     }
     if (
       !req.params.workspaceDisplayName ||
-      !validate.displayName.test(req.params.workspaceDisplayName)
+      !displayName.test(req.params.workspaceDisplayName)
     ) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
-    if (!req.body.email || !validate.email.test(req.body.email)) {
+    if (!req.body.email || !email.test(req.body.email)) {
       let err2 = new Error('valid email required!');
       err2.status = 403;
       return next(err2);
     }
 
-    if (req.body.newRole && !validate.roles.test(req.body.newRole)) {
+    if (req.body.newRole && !roles.test(req.body.newRole)) {
       let err3 = new Error('valid newRole required!');
       err3.status = 403;
       return next(err3);
     }
-    if (req.body.newEmail && !validate.email.test(req.body.newEmail)) {
+    if (req.body.newEmail && !email.test(req.body.newEmail)) {
       let err4 = new Error('valid newEmail required!');
       err4.status = 403;
       return next(err4);
@@ -112,7 +112,7 @@ module.exports = {
   removeUser: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
-      !validate.displayName.test(req.params.companyDisplayName)
+      !displayName.test(req.params.companyDisplayName)
     ) {
       let err = new Error('valid companyDisplayName required!');
       err.status = 403;
@@ -120,13 +120,13 @@ module.exports = {
     }
     if (
       !req.params.workspaceDisplayName ||
-      !validate.displayName.test(req.params.workspaceDisplayName)
+      !displayName.test(req.params.workspaceDisplayName)
     ) {
       let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
-    if (!req.body.email || !validate.email.test(req.body.email)) {
+    if (!req.body.email || !email.test(req.body.email)) {
       let err2 = new Error('valid email required!');
       err2.status = 403;
       return next(err2);

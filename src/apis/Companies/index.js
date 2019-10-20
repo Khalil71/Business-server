@@ -1,15 +1,17 @@
 const { Router } = require('express');
 
-const Companies = require('./Companies.Controller');
+const {
+  getCompanies, getOneCompany, createCompany, updateCompany
+} = require('./Companies.Controller');
 
 let router = new Router();
 
-router.get('/', Companies.getCompanies);
+router.get('/', getCompanies);
 
-router.get('/:displayName', Companies.getOneCompany);
+router.get('/:displayName', getOneCompany);
 
-router.post('/', Companies.createCompany);
+router.post('/', createCompany);
 
-router.patch('/:displayName', Companies.updateCompany);
+router.patch('/:displayName', updateCompany);
 
 module.exports = router;

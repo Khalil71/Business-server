@@ -1,10 +1,10 @@
 const { Router } = require('express');
 
-const Workspaces = require('./Workspaces.Controller');
+const { createWorkspace, updateWorkspace } = require('./Workspaces.Controller');
 
 let router = new Router();
 
-router.post('/:companyDisplayName/workspaces', Workspaces.createWorkspace);
-router.patch('/:companyDisplayName/workspaces/:workspaceDisplayName', Workspaces.updateWorkspace);
+router.post('/:companyDisplayName/workspaces', createWorkspace);
+router.patch('/:companyDisplayName/workspaces/:workspaceDisplayName', updateWorkspace);
 
 module.exports = router;
