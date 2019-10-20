@@ -1,59 +1,56 @@
-var Companies = require('../../models/Companies');
+/* eslint-disable one-var */
+const Companies = require('../../models/Companies');
 
-function User(data) {
-  this.data = data;
-}
-
-User.prototype.createUser = function () {
-  return Companies.update(
-    {
-      displayName: this.data.companyDisplayName,
-      'workspaces.displayName': this.data.workspaceDispalyName
-    },
-    {
-      $push: {
-        'workspaces.$.users': {
-          email: this.data.email,
-          role: this.data.role
+class User {
+  constructor(data) {
+    this.data = data;
+  }
+  async createUser() {
+    try {
+      const res = await Companies.update(
+        {
+          displayName: this.data.companyDisplayName,
+          'workspaces.displayName': this.data.workspaceDisplayName
+        },
+        {
+          $push: {
+            'workspaces.$.users': {
+              email: this.data.email,
+              role: this.data.role
+            }
+          }
         }
-      }
-    }
-  )
-    .then(function (res) {
+      );
       if (res.nModified > 0) {
         return 'Success';
       }
       return 'Record not found!';
-    })
-    .catch(function (e) {
+    } catch (e) {
       return e;
-    });
-};
-
-User.prototype.findUser = function () {
-  var workspaceDispalyName = this.data.workspaceDispalyName;
-  var email = this.data.email;
-  var newEmail = this.data.newEmail;
-  var newRole = this.data.newRole;
-  return Companies.findOne({
-    displayName: this.data.companyDisplayName,
-    'workspaces.displayName': this.data.workspaceDispalyName,
-    'workspaces.users.email': this.data.email
-  })
-    .then(function (res) {
+    }
+  }
+  async findUser() {
+    let workspaceDisplayName = this.data.workspaceDisplayName,
+      email = this.data.email,
+      newEmail = this.data.newEmail,
+      newRole = this.data.newRole;
+    try {
+      const res = await Companies.findOne({
+        displayName: this.data.companyDisplayName,
+        'workspaces.displayName': this.data.workspaceDisplayName,
+        'workspaces.users.email': this.data.email
+      });
       if (res === null) {
         return res;
       }
-      // Here I simply got the requied user object by index and changed its values with the new data
-      var workspaceIndex = res.workspaces.findIndex(function (elem) {
-        return elem.displayName === workspaceDispalyName;
-      });
-      var usersIndex = res.workspaces[workspaceIndex].users.findIndex(function (elem) {
-        return elem.email === email;
-      });
-      var newUserIndex = res.workspaces[workspaceIndex].users.findIndex(function (elem) {
-        return elem.email === newEmail;
-      });
+
+      let workspaceIndex = res.workspaces
+        .findIndex(elem => elem.displayName === workspaceDisplayName);
+      let usersIndex = res.workspaces[workspaceIndex].users
+        .findIndex(elem => elem.email === email);
+      let newUserIndex = res.workspaces[workspaceIndex].users
+        .findIndex(elem => elem.email === newEmail);
+
       if (newEmail && newUserIndex >= 0) {
         return true;
       }
@@ -64,53 +61,56 @@ User.prototype.findUser = function () {
         res.workspaces[workspaceIndex].users[usersIndex].role = newRole;
       }
       return res;
-    })
-    .catch(function (e) {
+    } catch (e) {
       return e;
-    });
-};
-
-User.prototype.updateUser = function (data) {
-  return Companies.update(
-    {
-      displayName: this.data.companyDisplayName,
-      'workspaces.displayName': this.data.workspaceDispalyName,
-      'workspaces.users.email': this.data.email
-    },
-    data
-  )
-    .then(function () {
+    }
+  }
+  async updateUser(data) {
+    try {
+      await Companies.update(
+        {
+          displayName: this.data.companyDisplayName,
+          'workspaces.displayName': this.data.workspaceDisplayName,
+          'workspaces.users.email': this.data.email
+        },
+        data
+      );
       return 'Success';
-    })
-    .catch(function (e) {
+    } catch (e) {
       return e;
-    });
-};
-
-User.prototype.findUserToRemove = function () {
-  var workspaceDispalyName = this.data.workspaceDispalyName;
-  var email = this.data.email;
-  return Companies.findOne({
-    displayName: this.data.companyDisplayName,
-    'workspaces.displayName': this.data.workspaceDispalyName,
-    'workspaces.users.email': this.data.email
-  })
-    .then(function (res) {
+    }
+  }
+  async findUserToRemove() {
+    let workspaceDisplayName = this.data.workspaceDisplayName;
+    let email = this.data.email;
+    try {
+      const res = await Companies.findOne({
+        displayName: this.data.companyDisplayName,
+        'workspaces.displayName': this.data.workspaceDisplayName,
+        'workspaces.users.email': this.data.email
+      });
       if (res === null) {
         return res;
       }
-      var workspaceIndex = res.workspaces.findIndex(function (elem) {
-        return elem.displayName === workspaceDispalyName;
-      });
-      var usersIndex = res.workspaces[workspaceIndex].users.findIndex(function (elem) {
-        return elem.email === email;
-      });
-      res.workspaces[workspaceIndex].users.splice(usersIndex, 1);
+      let workspaceIndex = res.workspaces
+          .findIndex(elem => elem.displayName === workspaceDisplayName),
+        usersIndex = res.workspaces[workspaceIndex].users
+          .findIndex(elem => elem.email === email),
+        removeObj = res.workspaces[workspaceIndex].users[usersIndex],
+        lastObj =
+        res.workspaces[workspaceIndex].users[res.workspaces[workspaceIndex].users.length - 1];
+
+      res.workspaces[workspaceIndex].users[usersIndex] = lastObj;
+      res.workspaces[workspaceIndex].users[
+        res.workspaces[workspaceIndex].users.length - 1
+      ] = removeObj;
+      res.workspaces[workspaceIndex].users.pop();
+
       return res;
-    })
-    .catch(function (e) {
+    } catch (e) {
       return e;
-    });
-};
+    }
+  }
+}
 
 module.exports = User;

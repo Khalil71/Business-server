@@ -1,8 +1,8 @@
-var Router = require('express').Router;
+const { Router } = require('express');
 
-var Companies = require('./Companies.Controller');
+const Companies = require('./Companies.Controller');
 
-var router = new Router();
+let router = new Router();
 
 router.get('/', Companies.getCompanies);
 

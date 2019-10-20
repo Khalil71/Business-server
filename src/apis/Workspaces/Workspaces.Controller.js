@@ -1,102 +1,81 @@
-var Workspace = require('./Workspaces.Service');
-var validate = require('../../services/ValidationService');
+const Workspace = require('./Workspaces.Service');
+const validate = require('../../services/ValidationService');
 
 module.exports = {
-  createWorkspace: function (req, res, next) {
-    // To make sure the workspace name is unique within it's Company's findWorkspaceToUpdate
-    // I had to query the DB twice first to find if the name already exisits in this scopre
-    // second to create the workspace incase the workspace doesn't already exist
+  createWorkspace: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)
     ) {
-      var err = new Error('valid companyDisplayName required!');
+      let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
     if (
-      !req.body.workspaceDispalyName ||
-      !validate.displayName.test(req.body.workspaceDispalyName)
+      !req.body.workspaceDisplayName ||
+      !validate.displayName.test(req.body.workspaceDisplayName)
     ) {
-      var err1 = new Error('valid workspaceDispalyName required!');
+      let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
     req.body.companyDisplayName = req.params.companyDisplayName;
-    var instance = new Workspace(req.body);
-    return instance
-      .findWorkspace()
-      .then(function (out) {
-        if (out != null) {
-          var newError = new Error('Worskapce name already exists!');
-          newError.status = 403;
-          return next(newError);
-        }
-        return instance
-          .createWorkspace()
-          .then(function (result) {
-            return res.status(200).json({ data: result, status: 200 });
-          })
-          .catch(function (e) {
-            e.status = 403;
-            return next(e);
-          });
-      })
-      .catch(function (e) {
-        e.status = 403;
-        return next(e);
-      });
+    let instance = new Workspace(req.body);
+    try {
+      let findWorkspace = await instance.findWorkspace();
+      if (findWorkspace != null) {
+        let newError = new Error('WorkSpace name already exists!');
+        newError.status = 403;
+        return next(newError);
+      }
+      let createWorkspace = await instance.createWorkspace();
+      return res.status(200).json({ data: createWorkspace, status: 200 });
+    } catch (e) {
+      e.status = 403;
+      return next(e);
+    }
   },
-  updateWorkspace: function (req, res, next) {
-    // this process is simillar to the createWorkspace method
+  updateWorkspace: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)
     ) {
-      var err = new Error('valid companyDisplayName required!');
+      let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
     if (
-      !req.params.workspaceDispalyName ||
-      !validate.displayName.test(req.params.workspaceDispalyName)
+      !req.params.workspaceDisplayName ||
+      !validate.displayName.test(req.params.workspaceDisplayName)
     ) {
-      var err1 = new Error('valid workspaceDispalyName required!');
+      let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
     if (
-      !req.body.newWorkspaceDispalyName ||
-      !validate.displayName.test(req.body.newWorkspaceDispalyName)
+      !req.body.newWorkspaceDisplayName ||
+      !validate.displayName.test(req.body.newWorkspaceDisplayName)
     ) {
-      var err3 = new Error('valid newWorkspaceDispalyName required!');
+      let err3 = new Error('valid newWorkspaceDisplayName required!');
       err3.status = 403;
       return next(err3);
     }
-    req.body.workspaceDispalyName = req.params.workspaceDispalyName;
+    req.body.workspaceDisplayName = req.params.workspaceDisplayName;
     req.body.companyDisplayName = req.params.companyDisplayName;
-    var instance = new Workspace(req.body);
-    return instance
-      .findWorkspaceToUpdate()
-      .then(function (out) {
-        if (out != null) {
-          var newError = new Error('Worskapce name already exists!');
-          newError.status = 403;
-          return next(newError);
-        }
-        return instance
-          .updateWorkspace()
-          .then(function (result) {
-            return res.status(200).json({ data: result, status: 200 });
-          })
-          .catch(function (e) {
-            e.status = 403;
-            return next(e);
-          });
-      })
-      .catch(function (e) {
-        e.status = 403;
-        return next(e);
-      });
+    let instance = new Workspace(req.body);
+
+    try {
+      let findWorkspaceToUpdate = await instance.findWorkspaceToUpdate();
+      if (findWorkspaceToUpdate != null) {
+        let newError = new Error('WorkSpace name already exists!');
+        newError.status = 403;
+        return next(newError);
+      }
+      let updateWorkspace = await instance.updateWorkspace();
+      return res.status(200).json({ data: updateWorkspace, status: 200 });
+    } catch (e) {
+      e.status = 403;
+      return next(e);
+    }
   }
 };

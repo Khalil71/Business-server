@@ -1,63 +1,57 @@
-var Companies = require('../../models/Companies');
+/* eslint-disable class-methods-use-this */
+const Companies = require('../../models/Companies');
 
-function Company(data) {
-  this.data = data;
-}
-
-Company.prototype.getAllCompanies = function () {
-  return Companies.find()
-    .then(function (res) {
+class Company {
+  constructor(data) {
+    this.data = data;
+  }
+  async getAllCompanies() {
+    try {
+      const res = await Companies.find();
       return res;
-    })
-    .catch(function (e) {
+    } catch (e) {
       return e;
-    });
-};
-
-Company.prototype.getCompany = function () {
-  return Companies.findOne({ displayName: this.data.displayName })
-    .then(function (res) {
-      return res;
-    })
-    .catch(function (e) {
-      return e;
-    });
-};
-
-Company.prototype.createCompany = function () {
-  var company = new Companies({
-    displayName: this.data.displayName,
-    name: this.data.displayName.toLowerCase()
-  });
-  return company
-    .save()
-    .then(function (res) {
-      return res;
-    })
-    .catch(function (e) {
-      return e;
-    });
-};
-
-Company.prototype.updateCompany = function () {
-  return Companies.findOneAndUpdate(
-    {
-      displayName: this.data.displayName
-    },
-    {
-      displayName: this.data.newDisplayName,
-      name: this.data.newDisplayName.toLowerCase()
     }
-  )
-    .then(function (res) {
+  }
+  async getCompany() {
+    try {
+      const res = await Companies.findOne({ displayName: this.data.displayName });
+      return res;
+    } catch (e) {
+      return e;
+    }
+  }
+  async createCompany() {
+    let company = new Companies({
+      displayName: this.data.displayName,
+      name: this.data.displayName.toLowerCase()
+    });
+    try {
+      const res = await company.save();
+      return res;
+    } catch (e) {
+      return e;
+    }
+  }
+  async updateCompany() {
+    try {
+      const res = await Companies.findOneAndUpdate(
+        {
+          displayName: this.data.displayName
+        },
+        {
+          displayName: this.data.newDisplayName,
+          name: this.data.newDisplayName.toLowerCase()
+        }
+      );
       if (res === null) {
         return 'Nothing was updated';
       }
       return 'Success';
-    })
-    .catch(function (e) {
+    } catch (e) {
       return e;
-    });
-};
+    }
+  }
+}
 
 module.exports = Company;

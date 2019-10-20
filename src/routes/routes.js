@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import CompaniesRoutes from '../apis/Companies/index';
-import WorkspacesRoutes from '../apis/Workspaces/index';
-import UserRoutes from '../apis/Users/index';
+const { Router } = require('express');
+const CompaniesRoutes = require('../apis/Companies/index');
+const WorkspacesRoutes = require('../apis/Workspaces/index');
+const UserRoutes = require('../apis/Users/index');
 
-var router = new Router();
+let router = new Router();
 
 // Companies routes
 router.use('/', CompaniesRoutes);
@@ -12,4 +12,4 @@ router.use('/', WorkspacesRoutes);
 // User routes
 router.use('/', UserRoutes);
 
-export default router;
+module.exports = router;

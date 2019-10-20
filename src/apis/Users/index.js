@@ -1,11 +1,11 @@
-var Router = require('express').Router;
+const { Router } = require('express');
 
-var Users = require('./Users.Controller');
+const Users = require('./Users.Controller');
 
-var router = new Router();
+let router = new Router();
 
-router.post('/:companyDisplayName/workspaces/:workspaceDispalyName/users', Users.createUser);
-router.patch('/:companyDisplayName/workspaces/:workspaceDispalyName/users', Users.updateUser);
-router.delete('/:companyDisplayName/workspaces/:workspaceDispalyName/users', Users.removeUser);
+router.post('/:companyDisplayName/workspaces/:workspaceDisplayName/users', Users.createUser);
+router.patch('/:companyDisplayName/workspaces/:workspaceDisplayName/users', Users.updateUser);
+router.delete('/:companyDisplayName/workspaces/:workspaceDisplayName/users', Users.removeUser);
 
 module.exports = router;

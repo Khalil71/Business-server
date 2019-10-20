@@ -5,10 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node app",
-    "test": "mocha src/tests/*.test.js",
-    "test-comp": "mocha src/tests/Companies.test.js",
-    "test-work": "mocha src/tests/Workspaces.test.js",
-    "test-user": "mocha src/tests/Users.test.js"
+    "test": "mocha src/tests/*.test.js --exit",
+    "test-comp": "mocha src/tests/Companies.test.js --exit",
+    "test-work": "mocha src/tests/Workspaces.test.js --exit",
+    "test-user": "mocha src/tests/Users.test.js --exit"
   },
   "author": "",
   "license": "ISC",

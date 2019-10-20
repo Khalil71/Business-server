@@ -1,66 +1,68 @@
-var expect = require('chai').expect;
-var mongoose = require('mongoose');
-var Company = require('../apis/Companies/Companies.Service');
-var Workspace = require('../apis/Workspaces/Workspaces.Service');
+/* eslint-disable indent */
+/* eslint-disable one-var */
+const { expect } = require('chai'),
+  mongoose = require('mongoose'),
+  Company = require('../apis/Companies/Companies.Service'),
+  Workspace = require('../apis/Workspaces/Workspaces.Service');
 
-describe('Workspace Tests', function () {
-  before(function (done) {
+describe('Workspace Tests', () => {
+  before((done) => {
     mongoose.connect('mongodb://test1:test1@ds245805.mlab.com:45805/business');
-    var db = mongoose.connection;
+    let db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error')); // eslint-disable-line
-    db.once('open', function () {
+    db.once('open', () => {
       console.log('We are connected to Business database!'); // eslint-disable-line
       return done();
     });
   });
 
-  before(function (done) {
-    mongoose.connection.db.dropCollection('companies', function () {
+  before((done) => {
+    mongoose.connection.db.dropCollection('companies', () => {
       console.log('Companies collection dropped'); // eslint-disable-line
       done();
     });
   });
 
-  it('should create a new Company', function (done) {
-    var data = { displayName: 'Google' };
-    var instance = new Company(data);
-    var Create = instance.createCompany();
-    Create.then(function (result) {
+  it('should create a new Company', (done) => {
+    let data = { displayName: 'Google' },
+     instance = new Company(data),
+     Create = instance.createCompany();
+    Create.then((result) => {
       expect(result.displayName).to.equal(data.displayName);
       done();
     });
   });
 
-  it('should create a new Workspace', function (done) {
-    var data = { companyDisplayName: 'Google', workspaceDispalyName: 'SomweWorkSpace' };
-    var instance = new Workspace(data);
-    var Create = instance.createWorkspace();
-    Create.then(function (result) {
+  it('should create a new Workspace', (done) => {
+    let data = { companyDisplayName: 'Google', workspaceDisplayName: 'SomeWorkSpace' },
+    instance = new Workspace(data),
+    Create = instance.createWorkspace();
+    Create.then((result) => {
       expect(result).to.equal('Success');
       done();
     });
   });
 
-  it('should get update 1 workspace', function (done) {
-    var data = {
+  it('should get update 1 workspace', (done) => {
+    let data = {
       companyDisplayName: 'Google',
-      workspaceDispalyName: 'SomweWorkSpace',
-      newWorkspaceDispalyName: 'NewWorkspace'
-    };
-    var instance = new Workspace(data);
-    var getOne = instance.updateWorkspace();
-    getOne.then(function (result) {
+      workspaceDisplayName: 'SomeWorkSpace',
+      newWorkspaceDisplayName: 'NewWorkspace'
+    },
+     instance = new Workspace(data),
+     getOne = instance.updateWorkspace();
+    getOne.then((result) => {
       expect(result).to.equal('Success');
       done();
     });
   });
 
-  it('should find 1 specefic company in the collection', function (done) {
-    var data = { companyDisplayName: 'Google', workspaceDispalyName: 'NewWorkspace' };
-    var instance = new Workspace(data);
-    var updateOne = instance.findWorkspace();
-    updateOne.then(function (result) {
-      expect(result.workspaces[0].displayName).to.equal(data.workspaceDispalyName);
+  it('should find 1 specific company in the collection', (done) => {
+    let data = { companyDisplayName: 'Google', workspaceDisplayName: 'NewWorkspace' },
+     instance = new Workspace(data),
+     updateOne = instance.findWorkspace();
+    updateOne.then((result) => {
+      expect(result.workspaces[0].displayName).to.equal(data.workspaceDisplayName);
       done();
     });
   });

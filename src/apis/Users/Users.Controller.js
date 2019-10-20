@@ -1,189 +1,158 @@
-var User = require('./Users.Service');
-var validate = require('../../services/ValidationService');
+const User = require('./Users.Service');
+const validate = require('../../services/ValidationService');
 
 module.exports = {
-  createUser: function (req, res, next) {
+  createUser: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)
     ) {
-      var err = new Error('valid companyDisplayName required!');
+      let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
     if (
-      !req.params.workspaceDispalyName ||
-      !validate.displayName.test(req.params.workspaceDispalyName)
+      !req.params.workspaceDisplayName ||
+      !validate.displayName.test(req.params.workspaceDisplayName)
     ) {
-      var err1 = new Error('valid workspaceDispalyName required!');
+      let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
     if (!req.body.email || !validate.email.test(req.body.email)) {
-      var err2 = new Error('valid email required!');
+      let err2 = new Error('valid email required!');
       err2.status = 403;
       return next(err2);
     }
     if (!req.body.role || !validate.roles.test(req.body.role)) {
-      var err3 = new Error('valid role required!');
+      let err3 = new Error('valid role required!');
       err3.status = 403;
       return next(err3);
     }
     req.body.companyDisplayName = req.params.companyDisplayName;
-    req.body.workspaceDispalyName = req.params.workspaceDispalyName;
-    var instance = new User(req.body);
-    // In order to make sure the workspace name is unique within it's workspace's scope
-    // I would query the DB twice first to make sure the user doesn't exist
-    // sencond to create the user
-    return instance
-      .findUser()
-      .then(function (out) {
-        if (out != null) {
-          var newError = new Error('User already exists!');
-          newError.status = 403;
-          return next(newError);
-        }
-        return instance
-          .createUser()
-          .then(function (result) {
-            return res.status(200).json({ data: result, status: 200 });
-          })
-          .catch(function (e) {
-            e.status = 403;
-            return next(e);
-          });
-      })
-      .catch(function (e) {
-        e.status = 403;
-        return next(e);
-      });
+    req.body.workspaceDisplayName = req.params.workspaceDisplayName;
+    let instance = new User(req.body);
+    try {
+      let findUser = await instance.findUser();
+      if (findUser != null) {
+        let newError = new Error('User already exists!');
+        newError.status = 403;
+        return next(newError);
+      }
+      let createUser = await instance.createUser();
+      return res.status(200).json({ data: createUser, status: 200 });
+    } catch (e) {
+      e.status = 403;
+      return next(e);
+    }
   },
-  updateUser: function (req, res, next) {
+  updateUser: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)
     ) {
-      var err = new Error('valid companyDisplayName required!');
+      let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
     if (
-      !req.params.workspaceDispalyName ||
-      !validate.displayName.test(req.params.workspaceDispalyName)
+      !req.params.workspaceDisplayName ||
+      !validate.displayName.test(req.params.workspaceDisplayName)
     ) {
-      var err1 = new Error('valid workspaceDispalyName required!');
+      let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
     if (!req.body.email || !validate.email.test(req.body.email)) {
-      var err2 = new Error('valid email required!');
+      let err2 = new Error('valid email required!');
       err2.status = 403;
       return next(err2);
     }
 
     if (req.body.newRole && !validate.roles.test(req.body.newRole)) {
-      var err3 = new Error('valid newRole required!');
+      let err3 = new Error('valid newRole required!');
       err3.status = 403;
       return next(err3);
     }
     if (req.body.newEmail && !validate.email.test(req.body.newEmail)) {
-      var err4 = new Error('valid newEmail required!');
+      let err4 = new Error('valid newEmail required!');
       err4.status = 403;
       return next(err4);
     }
 
     if (!req.body.newRole && !req.body.newEmail) {
-      var err5 = new Error('valid newRole required!');
+      let err5 = new Error('valid newRole required!');
       err5.status = 403;
       return next(err5);
     }
     req.body.companyDisplayName = req.params.companyDisplayName;
-    req.body.workspaceDispalyName = req.params.workspaceDispalyName;
-    var instance = new User(req.body);
-    // I wasn't able to find a way to query the DB for a doulbe nested subdoc
-    // so I would query the DB twice first to get the requied document
-    // and then chnage the data that is required to be changed
-    // sencond to update(save) the whole document
-    return instance
-      .findUser()
-      .then(function (out) {
-        if (out === null) {
-          var newError = new Error("Record does't exist!!");
-          newError.status = 403;
-          return next(newError);
-        }
-        if (out === true) {
-          var dubError = new Error('Email already exists in this scope!!');
-          dubError.status = 403;
-          return next(dubError);
-        }
-        return instance
-          .updateUser(out)
-          .then(function (result) {
-            return res.status(200).json({ data: result, status: 200 });
-          })
-          .catch(function (e) {
-            e.status = 403;
-            return next(e);
-          });
-      })
-      .catch(function (e) {
-        e.status = 403;
-        return next(e);
-      });
+    req.body.workspaceDisplayName = req.params.workspaceDisplayName;
+    let instance = new User(req.body);
+
+    try {
+      let findUser = await instance.findUser();
+      if (findUser === null) {
+        let newError = new Error("Record doesn't exist!!");
+        newError.status = 403;
+        return next(newError);
+      }
+      if (findUser === true) {
+        let dubError = new Error('Email already exists in this scope!!');
+        dubError.status = 403;
+        return next(dubError);
+      }
+      let updateUser = await instance.updateUser(findUser);
+      return res.status(200).json({ data: updateUser, status: 200 });
+    } catch (e) {
+      e.status = 403;
+      return next(e);
+    }
   },
-  // This proccess is similar to the updateUser method
-  removeUser: function (req, res, next) {
+
+  removeUser: async (req, res, next) => {
     if (
       !req.params.companyDisplayName ||
       !validate.displayName.test(req.params.companyDisplayName)
     ) {
-      var err = new Error('valid companyDisplayName required!');
+      let err = new Error('valid companyDisplayName required!');
       err.status = 403;
       return next(err);
     }
     if (
-      !req.params.workspaceDispalyName ||
-      !validate.displayName.test(req.params.workspaceDispalyName)
+      !req.params.workspaceDisplayName ||
+      !validate.displayName.test(req.params.workspaceDisplayName)
     ) {
-      var err1 = new Error('valid workspaceDispalyName required!');
+      let err1 = new Error('valid workspaceDisplayName required!');
       err1.status = 403;
       return next(err1);
     }
     if (!req.body.email || !validate.email.test(req.body.email)) {
-      var err2 = new Error('valid email required!');
+      let err2 = new Error('valid email required!');
       err2.status = 403;
       return next(err2);
     }
     req.body.companyDisplayName = req.params.companyDisplayName;
-    req.body.workspaceDispalyName = req.params.workspaceDispalyName;
-    var instance = new User(req.body);
-    return instance
-      .findUserToRemove()
-      .then(function (out) {
-        if (out === null) {
-          var newError = new Error("Record does't exist!!");
-          newError.status = 403;
-          return next(newError);
-        }
-        if (out === true) {
-          var dubError = new Error('Email already exists in this scope!!');
-          dubError.status = 403;
-          return next(dubError);
-        }
-        return instance
-          .updateUser(out)
-          .then(function (result) {
-            return res.status(200).json({ data: result, status: 200 });
-          })
-          .catch(function (e) {
-            e.status = 403;
-            return next(e);
-          });
-      })
-      .catch(function (e) {
-        e.status = 403;
-        return next(e);
-      });
+    req.body.workspaceDisplayName = req.params.workspaceDisplayName;
+    let instance = new User(req.body);
+    try {
+      let removeUser = await instance.findUserToRemove();
+      if (removeUser === null) {
+        let newError = new Error("Record doesn't exist!!");
+        newError.status = 403;
+        return next(newError);
+      }
+
+      if (removeUser === true) {
+        let dubError = new Error('Email already exists in this scope!!');
+        dubError.status = 403;
+        return next(dubError);
+      }
+
+      let updateUser = await instance.updateUser(removeUser);
+      return res.status(200).json({ data: updateUser, status: 200 });
+    } catch (e) {
+      e.status = 403;
+      return next(e);
+    }
   }
 };

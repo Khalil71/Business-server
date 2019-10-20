@@ -2,7 +2,8 @@
   "extends": ["prettier", "airbnb-base/legacy"],
   "plugins": ["require-path-exists", "import", "prettier"],
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 2017
   },
   "env": {
     "node": true,

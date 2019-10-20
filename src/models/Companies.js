@@ -1,48 +1,48 @@
-var mongoose = require('mongoose');
-var uuid = require('uuid/v1');
+const mongoose = require('mongoose');
+const uuid = require('uuid/v1');
 
 mongoose.Promise = global.Promise;
 
-var usersSchema = new mongoose.Schema(
+let usersSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      reqired: true,
+      required: true,
       lowercase: true
     },
-    role: { type: String, reqired: true, lowercase: true }
+    role: { type: String, required: true, lowercase: true }
   },
   { _id: false }
 );
 
-var workspacesSchema = new mongoose.Schema({
+let workspacesSchema = new mongoose.Schema({
   _id: {
     type: String,
-    reqired: true,
+    required: true,
     default: uuid
   },
-  displayName: { type: String, reqired: true },
+  displayName: { type: String, required: true },
   name: {
     type: String,
-    reqired: true,
+    required: true,
     lowercase: true
   },
   users: [usersSchema]
 });
 
-var companiesSchema = new mongoose.Schema({
+let companiesSchema = new mongoose.Schema({
   _id: {
     type: String,
-    reqired: true,
+    required: true,
     default: uuid
   },
   displayName: {
     type: String,
-    reqired: true
+    required: true
   },
   name: {
     type: String,
-    reqired: true,
+    required: true,
     unique: true,
     lowercase: true
   },

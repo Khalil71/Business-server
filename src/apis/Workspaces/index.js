@@ -1,8 +1,8 @@
-var Router = require('express').Router;
+const { Router } = require('express');
 
-var Workspaces = require('./Workspaces.Controller');
+const Workspaces = require('./Workspaces.Controller');
 
-var router = new Router();
+let router = new Router();
 
 router.post('/:companyDisplayName/workspaces', Workspaces.createWorkspace);
 router.patch('/:companyDisplayName/workspaces/:workspaceDispalyName', Workspaces.updateWorkspace);

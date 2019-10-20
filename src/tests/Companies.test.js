@@ -1,60 +1,61 @@
-var expect = require('chai').expect;
-var mongoose = require('mongoose');
-var Company = require('../apis/Companies/Companies.Service');
+/* eslint-disable one-var */
+const { expect } = require('chai');
+const mongoose = require('mongoose');
+const Company = require('../apis/Companies/Companies.Service');
 
-describe('Companies Tests', function () {
-  before(function (done) {
-    mongoose.connect('mongodb://test1:test1@ds245805.mlab.com:45805/business');
-    var db = mongoose.connection;
+describe('Companies Tests', () => {
+  before((done) => {
+    mongoose.connect('mongodb://test1:test1@ds245805.mlab.com:45805/business', { useNewUrlParser: true });
+    const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error')); // eslint-disable-line
-    db.once('open', function () {
+    db.once('open', () => {
       console.log('We are connected to Business database!'); // eslint-disable-line
       done();
     });
   });
 
-  before(function (done) {
-    mongoose.connection.db.dropCollection('companies', function () {
+  before((done) => {
+    mongoose.connection.db.dropCollection('companies', () => {
       console.log('Companies collection dropped'); // eslint-disable-line
       done();
     });
   });
 
-  it('should create a new Company', function (done) {
-    var data = { displayName: 'Google' };
-    var instance = new Company(data);
-    var Create = instance.createCompany();
-    Create.then(function (result) {
+  it('should create a new Company', (done) => {
+    let data = { displayName: 'Google' },
+      instance = new Company(data),
+      Create = instance.createCompany();
+    Create.then((result) => {
       expect(result.displayName).to.equal(data.displayName);
       done();
     });
   });
 
-  it('should create another new Company', function (done) {
-    var data = { displayName: 'Apple' };
-    var instance = new Company(data);
-    var Create = instance.createCompany();
-    Create.then(function (result) {
+  it('should create another new Company', (done) => {
+    let data = { displayName: 'Apple' },
+      instance = new Company(data),
+      Create = instance.createCompany();
+    Create.then((result) => {
       expect(result.displayName).to.equal(data.displayName);
       done();
     });
   });
 
-  it('should get 1 specefic company in the collection', function (done) {
-    var data = { displayName: 'Apple' };
-    var instance = new Company(data);
-    var getOne = instance.getCompany();
-    getOne.then(function (result) {
+  it('should get 1 specefic company in the collection', (done) => {
+    let data = { displayName: 'Apple' },
+      instance = new Company(data),
+      getOne = instance.getCompany();
+    getOne.then((result) => {
       expect(result.displayName).to.equal(data.displayName);
       done();
     });
   });
 
-  it('should update 1 specefic company in the collection', function (done) {
-    var data = { displayName: 'Apple', newDisplayName: 'Ubisoft' };
-    var instance = new Company(data);
-    var updateOne = instance.updateCompany();
-    updateOne.then(function (result) {
+  it('should update 1 specefic company in the collection', (done) => {
+    let data = { displayName: 'Apple', newDisplayName: 'Ubisoft' },
+      instance = new Company(data),
+      updateOne = instance.updateCompany();
+    updateOne.then((result) => {
       expect(result).to.equal('Success');
       done();
     });
