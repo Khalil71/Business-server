@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const Companies = require('../../models/Companies');
 
 class Company {
