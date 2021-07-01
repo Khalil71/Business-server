@@ -3,9 +3,9 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 
-const routes = require('./src/routes/routes');
-const { portNumber } = require('./src/services/references');
-const { mongoStart } = require('./src/services/templates');
+const routes = require('./routes/routes');
+const { portNumber } = require('./services/references');
+const { mongoStart } = require('./services/templates');
 
 let app = express();
 let port = process.env.PORT || portNumber;
