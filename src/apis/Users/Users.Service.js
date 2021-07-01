@@ -5,8 +5,10 @@ class User {
     this.data = data;
   }
   async createUser() {
+    let res;
+
     try {
-      const res = await Companies.update(
+      res = await Companies.updateOne(
         {
           displayName: this.data.companyDisplayName,
           'workspaces.displayName': this.data.workspaceDisplayName
@@ -20,53 +22,58 @@ class User {
           }
         }
       );
-      if (res.nModified > 0) {
-        return 'Success';
-      }
-      return 'Record not found!';
     } catch (e) {
       return e;
     }
+
+    if (res.nModified > 0) {
+      return 'Success';
+    }
+
+    return 'Record not found!';
   }
+
   async findUser() {
     let workspaceDisplayName = this.data.workspaceDisplayName;
     let email = this.data.email;
     let newEmail = this.data.newEmail;
     let newRole = this.data.newRole;
+    let res;
+
     try {
-      const res = await Companies.findOne({
+      res = await Companies.findOne({
         displayName: this.data.companyDisplayName,
         'workspaces.displayName': this.data.workspaceDisplayName,
         'workspaces.users.email': this.data.email
       });
-      if (res === null) {
-        return res;
-      }
-
-      let workspaceIndex = res.workspaces
-        .findIndex(elem => elem.displayName === workspaceDisplayName);
-      let usersIndex = res.workspaces[workspaceIndex].users
-        .findIndex(elem => elem.email === email);
-      let newUserIndex = res.workspaces[workspaceIndex].users
-        .findIndex(elem => elem.email === newEmail);
-
-      if (newEmail && newUserIndex >= 0) {
-        return true;
-      }
-      if (newEmail) {
-        res.workspaces[workspaceIndex].users[usersIndex].email = newEmail;
-      }
-      if (newRole) {
-        res.workspaces[workspaceIndex].users[usersIndex].role = newRole;
-      }
-      return res;
     } catch (e) {
       return e;
     }
+
+    if (!res) return;
+
+    let workspaceIndex = res.workspaces.findIndex(elem => elem.displayName === workspaceDisplayName);
+    let usersInWorkspace = res.workspaces[workspaceIndex].users;
+
+    let usersIndex = usersInWorkspace.findIndex(elem => elem.email === email);
+    let newUserIndex = usersInWorkspace.findIndex(elem => elem.email === newEmail);
+
+    if (newEmail && newUserIndex >= 0) {
+      return true;
+    }
+    if (newEmail) {
+      usersInWorkspace[usersIndex].email = newEmail;
+    }
+    if (newRole) {
+      usersInWorkspace[usersIndex].role = newRole;
+    }
+
+    return res;
   }
+
   async updateUser(data) {
     try {
-      await Companies.update(
+      await Companies.updateOne(
         {
           displayName: this.data.companyDisplayName,
           'workspaces.displayName': this.data.workspaceDisplayName,
@@ -79,34 +86,35 @@ class User {
       return e;
     }
   }
+
   async findUserToRemove() {
     let workspaceDisplayName = this.data.workspaceDisplayName;
     let email = this.data.email;
+    let res;
+
     try {
-      const res = await Companies.findOne({
+      res = await Companies.findOne({
         displayName: this.data.companyDisplayName,
         'workspaces.displayName': this.data.workspaceDisplayName,
         'workspaces.users.email': this.data.email
       });
-      if (res === null) {
-        return res;
-      }
-      let workspaceIndex = res.workspaces
-        .findIndex(elem => elem.displayName === workspaceDisplayName);
-      let usersIndex = res.workspaces[workspaceIndex].users.findIndex(elem => elem.email === email);
-      let removeObj = res.workspaces[workspaceIndex].users[usersIndex];
-      let lastObj =
-        res.workspaces[workspaceIndex].users[res.workspaces[workspaceIndex].users.length - 1];
-
-      res.workspaces[workspaceIndex].users[usersIndex] = lastObj;
-      res.workspaces[workspaceIndex].users[
-        res.workspaces[workspaceIndex].users.length - 1
-      ] = removeObj;
-      res.workspaces[workspaceIndex].users.pop();
-      return res;
     } catch (e) {
       return e;
     }
+    if (!res) return;
+
+    let workspaceIndex = res.workspaces.findIndex(elem => elem.displayName === workspaceDisplayName);
+    let usersInWorkspace = res.workspaces[workspaceIndex].users;
+
+    let usersIndex = usersInWorkspace.findIndex(elem => elem.email === email);
+    let removeObj = usersInWorkspace[usersIndex];
+    let lastObj = usersInWorkspace[usersInWorkspace.length - 1];
+
+    usersInWorkspace[usersIndex] = lastObj;
+    usersInWorkspace[usersInWorkspace.length - 1] = removeObj;
+    usersInWorkspace.pop();
+
+    return res;
   }
 }
 

@@ -1,5 +1,4 @@
 const Company = require('./Companies.Service');
-const { displayName } = require('../../services/ValidationService');
 
 module.exports = {
   getCompanies: async (req, res, next) => {
@@ -13,11 +12,6 @@ module.exports = {
     }
   },
   getOneCompany: (req, res, next) => {
-    if (!req.params.displayName || !displayName.test(req.params.displayName)) {
-      let err = new Error('valid displayName required!');
-      err.status = 403;
-      return next(err);
-    }
     const instance = new Company(req.params);
     return instance
       .getCompany()
@@ -35,11 +29,6 @@ module.exports = {
       });
   },
   createCompany: (req, res, next) => {
-    if (!req.body.displayName || !displayName.test(req.body.displayName)) {
-      let err = new Error('valid displayName required!');
-      err.status = 403;
-      return next(err);
-    }
     const instance = new Company(req.body);
     return instance
       .createCompany()
@@ -52,16 +41,6 @@ module.exports = {
       });
   },
   updateCompany: (req, res, next) => {
-    if (!req.params.displayName || !displayName.test(req.params.displayName)) {
-      let err = new Error('valid displayName required!');
-      err.status = 403;
-      return next(err);
-    }
-    if (!req.body.newDisplayName || !displayName.test(req.body.newDisplayName)) {
-      let err2 = new Error('valid newDisplayName required!');
-      err2.status = 403;
-      return next(err2);
-    }
     req.body.displayName = req.params.displayName;
     const instance = new Company(req.body);
     return instance

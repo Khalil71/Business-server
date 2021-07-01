@@ -27,8 +27,9 @@ class Workspace {
     }
   }
   async createWorkspace() {
+    let res;
     try {
-      const res = await Companies.update(
+      res = await Companies.updateOne(
         { displayName: this.data.companyDisplayName },
         {
           $push: {
@@ -39,17 +40,18 @@ class Workspace {
           }
         }
       );
-      if (res.nModified > 0) {
-        return 'Success';
-      }
-      return 'Nothing was Updated';
     } catch (e) {
       return e;
     }
+    if (res.nModified > 0) {
+      return 'Success';
+    }
+    return 'Nothing was Updated';
   }
   async updateWorkspace() {
+    let res;
     try {
-      const res = await Companies.update(
+      res = await Companies.updateOne(
         {
           displayName: this.data.companyDisplayName,
           'workspaces.displayName': this.data.workspaceDisplayName
@@ -61,13 +63,13 @@ class Workspace {
           }
         }
       );
-      if (res.nModified > 0) {
-        return 'Success';
-      }
-      return 'Nothing was Updated';
     } catch (e) {
       return e;
     }
+    if (res.nModified > 0) {
+      return 'Success';
+    }
+    return 'Nothing was Updated';
   }
 }
 

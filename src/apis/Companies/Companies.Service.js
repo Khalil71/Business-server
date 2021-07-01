@@ -34,8 +34,9 @@ class Company {
     }
   }
   async updateCompany() {
+    let res;
     try {
-      const res = await Companies.findOneAndUpdate(
+      res = await Companies.findOneAndUpdate(
         {
           displayName: this.data.displayName
         },
@@ -44,13 +45,13 @@ class Company {
           name: this.data.newDisplayName.toLowerCase()
         }
       );
-      if (res === null) {
-        return 'Nothing was updated';
-      }
-      return 'Success';
     } catch (e) {
       return e;
     }
+    if (!res) {
+      return 'Nothing was updated';
+    }
+    return 'Success';
   }
 }
 

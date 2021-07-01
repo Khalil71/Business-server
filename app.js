@@ -1,17 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 const routes = require('./src/routes/routes');
+const { portNumber } = require('./src/services/references');
+const { mongoStart } = require('./src/services/templates');
 
 let app = express();
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || portNumber;
 
-mongoose.connect('mongodb://test1:test1@ds245805.mlab.com:45805/business', function mongoConnect() {
-  console.log('mongoose connection success'); // eslint-disable-line
-}, { useNewUrlParser: true });
+mongoStart();
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
